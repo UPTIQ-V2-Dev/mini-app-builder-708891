@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/services/auth';
-import { getStoredAccessToken, clearAuthData } from '@/lib/api';
+import { getStoredToken, clearAuthData } from '@/lib/api';
 import type { User, LoginRequest, SignupRequest } from '@/types/user';
 
 interface AuthContextType {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { isLoading } = useQuery({
     queryKey: ['auth', 'me'],
     queryFn: async () => {
-      const token = getStoredAccessToken();
+      const token = getStoredToken();
       if (!token) {
         return null;
       }
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(mockUser);
       return mockUser;
     },
-    enabled: !!getStoredAccessToken(),
+    enabled: !!getStoredToken(),
     retry: false,
   });
 
